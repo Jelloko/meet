@@ -1,38 +1,113 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+
 .App {
   text-align: center;
+  padding: 2% 5%;
+  font-family: 'Roboto', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App * {
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+ul {
+  padding: 0;
+  list-style: none;
+  margin: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+p {
+  margin: 5px 0;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  line-height: 20px;
+  height: 38px;
+  margin-bottom: 20px;
+}
+
+#city-search {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 20px;
+  position: relative;
 }
 
-.App-link {
-  color: #61dafb;
+.city {
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.suggestions {
+  position: absolute;
+  top: 45px;
+  width: 100%;
+  max-width: 300px;
+  font-size: 14px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  background-color: white;
+  z-index: 2;
+  border-radius: 4px;
+  margin: 0;
+}
+
+.suggestions > li {
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.suggestions > li:hover {
+  background-color: #bcdcdb;
+}
+
+.event {
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: left;
+  position: relative;
+}
+
+#event-list {
+  border: 1px ;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.details-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background-color: #ddd;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.details-btn:hover {
+  background-color: #ccc;
+}
+
+#number-of-events {
+  margin: 0 auto;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#number-of-events label {
+  margin-bottom: 5px;
+  font-weight: 500;
 }
