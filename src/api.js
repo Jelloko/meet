@@ -75,6 +75,10 @@ export const getEvents = async () => {
     const url = "https://atik9avc2l.execute-api.us-east-1.amazonaws.com/dev/api/get-events" + "/" + token;
     const response = await fetch(url);
     const result = await response.json();
+    console.log("API fetch result:", result);  
     return result?.events || [];
+  } else {
+    console.error("Failed to retrieve token for events");
+    return [];
   }
 };
