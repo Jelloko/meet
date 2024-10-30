@@ -16,22 +16,18 @@ const App = () => {
 
   const fetchData = async () => {
     try {
-      const allEvents = await getEvents(); 
-
+      const allEvents = await getEvents();
       if (allEvents && Array.isArray(allEvents)) {
-        const filteredEvents = currentCity === "See all cities" ?
-          allEvents :
-          allEvents.filter(event => event.location === currentCity);
-
-        setEvents(filteredEvents.slice(0, currentNOE)); 
-        setAllLocations(extractLocations(allEvents)); 
+        const filteredEvents = currentCity === "See all cities"
+          ? allEvents
+          : allEvents.filter(event => event.location === currentCity);
+        setEvents(filteredEvents.slice(0, currentNOE));
+        setAllLocations(extractLocations(allEvents));
       } else {
         console.error("Data is undefined or not an array:", allEvents);
-        setError("Failed to fetch events.");
       }
     } catch (error) {
-      setError("Failed to fetch events: " + error.message); 
-      console.error("Fetch error:", error);
+      console.error("Failed to fetch events:", error);
     }
   };
 
