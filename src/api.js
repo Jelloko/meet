@@ -62,6 +62,7 @@ export const getEvents = async () => {
   }
 
   const token = await getAccessToken();
+
   const removeQuery = () => {
     if (window.history.pushState && window.location.pathname) {
       const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -72,20 +73,8 @@ export const getEvents = async () => {
   if (token) {
     removeQuery();
     const url = "https://atik9avc2l.execute-api.us-east-1.amazonaws.com/dev/api/get-events" + "/" + token;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.statusText}`);
-      }
-      const result = await response.json();
-      return result?.events || mockData; // Fallback to mockData if API data fails
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      return mockData; // Use mockData if there's a fetch error
-    }
-  } else {
-    console.error("Token is not available.");
-    return mockData; // Fallback to mockData if token fetch fails
+    const response = await fetch(url);
+    const result = await response.json();
+    return result?.events || [];
   }
 };
