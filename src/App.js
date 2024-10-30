@@ -12,21 +12,36 @@ const App = () => {
   const [currentNOE, setCurrentNOE] = useState(32);
   const [allLocations, setAllLocations] = useState([]);
   const [currentCity, setCurrentCity] = useState("See all cities");
+  const [error, setError] = useState(null); 
 
   const fetchData = async () => {
-    const allEvents = await getEvents();
-    const filteredEvents = currentCity === "See all cities" ?
-      allEvents :
-      allEvents.filter(event => event.location === currentCity)
-    setEvents(filteredEvents.slice(0, currentNOE));
-    setAllLocations(extractLocations(allEvents));
-  }
+    try {
+      const allEvents = await getEvents(); 
+
+      if (allEvents && Array.isArray(allEvents)) {
+        const filteredEvents = currentCity === "See all cities" ?
+          allEvents :
+          allEvents.filter(event => event.location === currentCity);
+
+        setEvents(filteredEvents.slice(0, currentNOE)); 
+        setAllLocations(extractLocations(allEvents)); 
+      } else {
+        console.error("Data is undefined or not an array:", allEvents);
+        setError("Failed to fetch events.");
+      }
+    } catch (error) {
+      setError("Failed to fetch events: " + error.message); 
+      console.error("Fetch error:", error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [currentCity, currentNOE]);
 
   return (
     <div className="App">
+      {error && <p>Error: {error}</p>} {/* Display error message if any */}
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
       <EventList events={events} />
       <NumberOfEvents onNumberChange={setCurrentNOE} />
