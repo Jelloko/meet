@@ -3,15 +3,10 @@
 import mockData from './mock-data';
 
 export const getAccessToken = async () => {
+
   const accessToken = localStorage.getItem('access_token');
 
-  const checkToken = async (accessToken) => {
-    const response = await fetch(
-      `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
-    );
-    const result = await response.json();
-    return result?.error ? null : accessToken;
-  };
+  const tokenCheck = accessToken && (await checkToken(accessToken));
 
   const getToken = async (code) => {
     const encodeCode = encodeURIComponent(code);
@@ -19,30 +14,29 @@ export const getAccessToken = async () => {
       'https://atik9avc2l.execute-api.us-east-1.amazonaws.com/dev/api/token' + '/' + encodeCode
     );
     const { access_token } = await response.json();
-    if (access_token) {
-      localStorage.setItem("access_token", access_token);
-    }
+    access_token && localStorage.setItem("access_token", access_token);
+  
     return access_token;
   };
 
-  // Check if accessToken is valid
-  if (accessToken) {
-    const validToken = await checkToken(accessToken);
-    if (validToken) return validToken;
+  if (!accessToken || tokenCheck.error) {
+    await localStorage.removeItem("access_token");
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = await searchParams.get("code");
+    if (!code) {
+      const response = await fetch(
+        "https://atik9avc2l.execute-api.us-east-1.amazonaws.com/dev/api/get-auth-url"
+      );
+      const result = await response.json();
+      const { authUrl } = result;
+      return (window.location.href = authUrl);
+    }
+    return code && getToken(code);
   }
+  return accessToken;
 
-  // Get token from OAuth process if no valid token
-  const code = new URLSearchParams(window.location.search).get('code');
-  if (code) {
-    return await getToken(code);
-  }
-
-  // Redirect to OAuth if no token and no code
-  if (!accessToken && !code) {
-    const authUrl = 'https://atik9avc2l.execute-api.us-east-1.amazonaws.com/dev/api/get-auth-url';
-    window.location.href = authUrl;
-  }
 };
+
 
 /**
  * Extracts unique locations from events.
@@ -53,6 +47,13 @@ export const extractLocations = (events) => {
   return locations;
 };
 
+const checkToken = async (accessToken) => {
+  const response = await fetch(
+    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
+  );
+  const result = await response.json();
+  return result;
+};
 /**
  * Fetches the list of all events.
  */
@@ -62,30 +63,35 @@ export const getEvents = async () => {
   }
 
   const token = await getAccessToken();
+
+
   const removeQuery = () => {
+    let newurl;
     if (window.history.pushState && window.location.pathname) {
-      const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-      window.history.pushState("", "", newUrl);
+      newurl =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        window.location.pathname;
+      window.history.pushState("", "", newurl);
+    } else {
+      newurl = window.location.protocol + "//" + window.location.host;
+      window.history.pushState("", "", newurl);
     }
   };
 
   if (token) {
     removeQuery();
-    const url = "https://atik9avc2l.execute-api.us-east-1.amazonaws.com/dev/api/get-events" + "/" + token;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.statusText}`);
-      }
-      const result = await response.json();
-      return result?.events || mockData; // Fallback to mockData if API data fails
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      return mockData; // Use mockData if there's a fetch error
-    }
-  } else {
-    console.error("Token is not available.");
-    return mockData; // Fallback to mockData if token fetch fails
+    const url =  "https://atik9avc2l.execute-api.us-east-1.amazonaws.com/dev/api/get-events" + "/" + token;
+    const response = await fetch(url);
+    const result = await response.json();
+    if (result) {
+      return result.events;
+    } else return null; 
   }
+
+  
+  
 };
+
+

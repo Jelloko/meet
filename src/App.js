@@ -17,17 +17,18 @@ const App = () => {
   const fetchData = async () => {
     try {
       const allEvents = await getEvents();
-      if (allEvents && Array.isArray(allEvents)) {
+      console.log("Fetched events:", allEvents); 
+      if (Array.isArray(allEvents)) {
         const filteredEvents = currentCity === "See all cities"
           ? allEvents
-          : allEvents.filter(event => event.location === currentCity);
+          : allEvents.filter((event) => event.location === currentCity);
         setEvents(filteredEvents.slice(0, currentNOE));
         setAllLocations(extractLocations(allEvents));
       } else {
-        console.error("Data is undefined or not an array:", allEvents);
+        console.error("Expected an array but received:", allEvents);
       }
     } catch (error) {
-      console.error("Failed to fetch events:", error);
+      console.error("Error fetching events:", error);
     }
   };
 
