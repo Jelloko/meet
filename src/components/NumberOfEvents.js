@@ -1,8 +1,7 @@
 // src/components/NumberOfEvents.js
-
 import { useState } from 'react';
 
-const NumberOfEvents = ({ onNumberChange }) => {
+const NumberOfEvents = ({ onNumberChange, setErrorAlert }) => {
   const [numberOfEvents, setNumberOfEvents] = useState(32);
 
   const handleInputChange = (event) => {
@@ -11,6 +10,13 @@ const NumberOfEvents = ({ onNumberChange }) => {
     if (onNumberChange) {
       onNumberChange(value);
     }
+    let ErrorText;
+    if (isNaN(value) || value <= 0) {
+      ErrorText = "Please type a number greater then 0"
+    } else {
+      ErrorText = ""
+    }
+    setErrorAlert(ErrorText);
   };
 
   return (
