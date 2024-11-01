@@ -7,20 +7,20 @@ import App from '../App';
 
 describe('<NumberOfEvents /> component', () => {
   test('renders input textbox', () => {
-    render(<NumberOfEvents onNumberChange={() => {}} />);
+    render(<NumberOfEvents onNumberChange={() => {}} setErrorAlert={() => {}} />);
     const inputElement = screen.getByRole('textbox');
     expect(inputElement).toBeInTheDocument();
   });
 
   test('default value of the input field is 32', () => {
-    render(<NumberOfEvents onNumberChange={() => {}} />);
+    render(<NumberOfEvents onNumberChange={() => {}} setErrorAlert={() => {}} />);
     const inputElement = screen.getByRole('textbox');
     expect(inputElement).toHaveValue(32);
   });
 
   test('changes the value when a user types in it', async () => {
     const user = userEvent.setup();
-    render(<NumberOfEvents onNumberChange={() => {}} />);
+    render(<NumberOfEvents onNumberChange={() => {}} setErrorAlert={() => {}} />);
     const inputElement = screen.getByRole('textbox');
 
     await user.clear(inputElement);  // Clear the default value
@@ -30,7 +30,7 @@ describe('<NumberOfEvents /> component', () => {
 
   test('correctly handles user typing and erasing input', async () => {
     const user = userEvent.setup();
-    render(<NumberOfEvents onNumberChange={() => {}} />);
+    render(<NumberOfEvents onNumberChange={() => {}} setErrorAlert={() => {}} />);
     const inputElement = screen.getByRole('textbox');
 
     await user.type(inputElement, '{backspace}{backspace}10');
