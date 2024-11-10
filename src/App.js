@@ -46,8 +46,8 @@ const App = () => {
       </div>
       {error && <p>Error: {error}</p>} {/* Display error message if any */}
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert} />
-      <EventList events={events} />
       <NumberOfEvents onNumberChange={setCurrentNOE} setErrorAlert={setErrorAlert} />
+      <EventList events={events} />
     </div>
   );
 };

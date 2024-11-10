@@ -42,6 +42,15 @@ input[type="number"] {
   position: relative;
 }
 
+#number-of-events {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
 .city {
   width: 100%;
 }
@@ -97,14 +106,6 @@ input[type="number"] {
 
 .details-btn:hover {
   background-color: #ccc;
-}
-
-#number-of-events {
-  margin: 0 auto;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 #number-of-events label {
