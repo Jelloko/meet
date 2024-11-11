@@ -49,3 +49,11 @@ export class InfoAlert extends Alert {
       this.bgColor = 'rgb(255, 220, 220)'; // light blue
     }
   }
+
+  export class WarningAlert extends Alert { 
+    constructor(props) {
+      super(props);
+      this.color = "rgb(150, 174, 55)";
+      this.bgColor = "rgb(255, 255, 220)";
+    }
+  }
