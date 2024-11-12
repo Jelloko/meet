@@ -55,7 +55,9 @@ const App = () => {
       {error && <p>Error: {error}</p>} {/* Display error message if any */}
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert} />
       <NumberOfEvents onNumberChange={setCurrentNOE} setErrorAlert={setErrorAlert} />
+      <div className="charts-container">
       <CityEventsChart allLocations={allLocations} events={events} />
+      </div>
       <EventList events={events} />
     </div>
   );
